@@ -37,6 +37,7 @@
 
     main {
         @apply min-h-screen relative bg-primary;
+        overflow-x: hidden;
     }
 
     header {
