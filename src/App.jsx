@@ -3,7 +3,7 @@ import { useDebounce } from 'react-use'
 import { updateSearchCount, getTrendingMovies } from './appwrite.js'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { NavLink } from "react-router"
-import Movie from './movie.jsx'
+import Movie from './Movie.jsx'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Search from './components/Search'
