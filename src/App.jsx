@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useDebounce } from 'react-use'
 import { updateSearchCount, getTrendingMovies } from './appwrite.js'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { NavLink } from "react-router"
+import Movie from './movie.jsx'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Search from './components/Search'
@@ -91,7 +94,7 @@ const App = () => {
       <div className='pattern' />
       <div className='wrapper'>
         <header>
-          <img src="./hero.png" alt="Hero Banner" />
+          <LazyLoadImage src="./hero.png" alt="Hero Banner" />
           <h1>Find <span className='text-gradient'>Movies</span> You'll Enjoy Without the Hassle</h1>
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </header>
@@ -121,14 +124,13 @@ const App = () => {
             <p className='text-red-500'>{errorMessage}</p>
           ) : (
             <ul>
-              {movieList.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
+                  {movieList.map((movie) => (
+                  <NavLink to={`/movie/${movie.id}` } key={movie.id}>
+                    <MovieCard key={movie.id} movie={movie} />
+                  </NavLink>
               ))}
             </ul>
-
           )}
-
-
         </section>
       </div>
     </main>
