@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 
 const MovieSort = ({ sortItemList, setSortItemList }) => {
   const [isOpen, setIsOpen] = useState(false)
-  
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen)
   }
 
   const getSortLabel = (sortOption) => {
-    switch(sortOption) {
+    switch (sortOption) {
       case 'popularity.desc':
         return 'Most Popular'
       case 'popularity.asc':
@@ -26,36 +26,36 @@ const MovieSort = ({ sortItemList, setSortItemList }) => {
     <div className="flex items-center">
       <div className="relative inline-block text-left">
         <div>
-          <button 
-            type="button" 
-            className="group inline-flex justify-center text-sm font-medium text-gray-300 hover:text-gray-100" 
-            id="menu-button" 
-            aria-expanded={isOpen} 
+          <button
+            type="button"
+            className="group inline-flex justify-center text-sm font-medium text-gray-300 hover:text-gray-100"
+            id="menu-button"
+            aria-expanded={isOpen}
             aria-haspopup="true"
             onClick={toggleDropdown}
           >
             {getSortLabel(sortItemList[0])}
-            <svg 
-              className="-mr-1 ml-1 size-5 shrink-0 text-gray-400 group-hover:text-gray-300" 
-              viewBox="0 0 20 20" 
-              fill="currentColor" 
-              aria-hidden="true" 
+            <svg
+              className="-mr-1 ml-1 size-5 shrink-0 text-gray-400 group-hover:text-gray-300"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
               data-slot="icon"
             >
-              <path 
-                fillRule="evenodd" 
-                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" 
-                clipRule="evenodd" 
+              <path
+                fillRule="evenodd"
+                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                clipRule="evenodd"
               />
             </svg>
           </button>
         </div>
         {isOpen && (
-          <div 
-            className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-dark-100 ring-1 shadow-2xl ring-light-100/20 focus:outline-hidden" 
-            role="menu" 
-            aria-orientation="vertical" 
-            aria-labelledby="menu-button" 
+          <div
+            className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-dark-100 ring-1 shadow-2xl ring-light-100/20 focus:outline-hidden"
+            role="menu"
+            aria-orientation="vertical"
+            aria-labelledby="menu-button"
             tabIndex="-1"
           >
             <div className="py-1" role="none">
@@ -74,12 +74,12 @@ const MovieSort = ({ sortItemList, setSortItemList }) => {
                   {getSortLabel(item)}
                 </button>
               ))}
-            </div>  
+            </div>
           </div>
         )}
       </div>
     </div>
   )
 }
-  
+
 export default MovieSort
