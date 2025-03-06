@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useDebounce } from 'react-use'
 import { updateSearchCount, getTrendingMovies } from './appwrite.js'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { NavLink } from "react-router"
-import Movie from './Movie.jsx'
-
+import { Link, Routes, Route } from 'react-router-dom';
+import SingleMovie from './components/SingleMovie.jsx'
+import MoviesPagination from './components/MoviesPagination'
+import GenreMovies from './components/GenreMovies'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Search from './components/Search'
 import Spinner from './components/Spinner'
@@ -21,12 +21,12 @@ const API_OPTIONS = {
   }
 }
 
-
-
-const App = () => {
+const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [movieList, setMovieList] = useState([])
+  const [moviesPagination, setMoviesPagination] = useState({})
+  const [currentPage, setCurrentPage] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
   const [trendingMovies, setTrendingMovies] = useState([])
@@ -40,7 +40,7 @@ const App = () => {
     try {
       const endpoint = query
         ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-        : `${API_BASE_URL}/discover/movie?sort_by=${sortItemList[0]}`
+        : `${API_BASE_URL}/discover/movie?sort_by=${sortItemList[0]}&page=${currentPage}`
 
       const response = await fetch(endpoint, API_OPTIONS)
 
@@ -58,7 +58,7 @@ const App = () => {
         return
       }
       setMovieList(data.results || [])
-
+      setMoviesPagination(data)
       if (query && data.results.length > 0) {
         await updateSearchCount(query, data.results[0])
       }
@@ -83,13 +83,14 @@ const App = () => {
 
   useEffect(() => {
     fetchMovies(debouncedSearchTerm)
-  }, [debouncedSearchTerm, sortItemList[0]])
+  }, [debouncedSearchTerm, sortItemList[0], currentPage])
 
   useEffect(() => {
     loadTrendingMovies()
   }, [])
 
   return (
+    <>
     <main>
       <div className='pattern' />
       <div className='wrapper'>
@@ -125,15 +126,30 @@ const App = () => {
           ) : (
             <ul>
                   {movieList.map((movie) => (
-                  <NavLink to={`/movie/${movie.id}` } key={movie.id}>
+                    <Link to={`/movie/${movie.id}`} key={movie.id}>
                     <MovieCard key={movie.id} movie={movie} />
-                  </NavLink>
+                    </Link>
               ))}
             </ul>
           )}
-        </section>
+          </section>
+          <MoviesPagination className='my-12' currentPage={currentPage} setCurrentPage={setCurrentPage} pageData={moviesPagination} />
       </div>
     </main>
+      <footer className='w-full text-white/70 text-center py-4 min-h-28 flex items-end justify-center'>
+        <p> 2025 Movie App. All rights reserved. Made by </p>
+      </footer>
+    </>
+  )
+}
+
+const App = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/movie/:movieId" element={<SingleMovie />} />
+      <Route path="/genre/:genreId/:genreName" element={<GenreMovies />} />
+    </Routes>
   )
 }
 
